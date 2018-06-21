@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eu o pipefail
-
 # Copied/adapted from https://github.com/psi4/psi4meta
 
 if [[ $(uname) == "Darwin" ]]; then
@@ -47,7 +45,9 @@ if [[ $(uname) == "Linux" ]]; then
 
     # load Intel compilers
     set +x
-    . /theoryfs2/common/software/intel2018/bin/compilervars.sh intel64
+    . /global/hds/software/cpu/eb3/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/bin/compilervars.sh intel64
+    . /global/hds/software/cpu/eb3/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/bin/compilervars.sh intel64
+    . /global/hds/software/cpu/eb3/imkl/2018.1.163-iimpi-2018a/bin/compilervars.sh intel64
     set -x
 
     # link against conda MKL & GCC

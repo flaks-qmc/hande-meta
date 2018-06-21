@@ -2,7 +2,7 @@
 {% set data = load_setup_py_data(setup_file='conda/_conda_vers.py') %}
 
 package:
-    name: HANDE
+    name: hande
     version: {{ data.get('version') }}
 
 source:
@@ -34,7 +34,7 @@ requirements:
         - pandas
 
 outputs:
-    - name: HANDE
+    - name: hande
       build:
           requires_features:
               blas: {{ blas_impl }}
@@ -46,7 +46,7 @@ outputs:
           host:
               - mkl-devel {{ mkl }}            # [blas_impl == 'mkl']
               - python {{ python }}
-              - lua {{ lua }}                                         
+              - lua {{ lua }}
               - hdf5 {{ hdf5 }}
               - openmpi {{ openmpi }}
               - libuuid

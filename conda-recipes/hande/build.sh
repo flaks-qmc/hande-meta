@@ -24,12 +24,8 @@ if [[ $(uname) == "Darwin" ]]; then
         #-DBLAS_LIBRARIES="/System/Library/Frameworks/Accelerate.framework/Accelerate"
         #-DENABLE_OPENMP=ON \
 
-    # build
-    cd build
-    make -j"${CPU_COUNT}"
-
-    # install
-    make install
+    # build and install
+    cmake --build build --target install -- -j"${CPU_COUNT}"
 
     # test (full suite too stressful for macpsinet)
     ctest -M Nightly -T Test -T Submit -j"${CPU_COUNT}" -L quick

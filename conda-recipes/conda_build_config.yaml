@@ -1,0 +1,35 @@
+# Copied/adapted from https://github.com/psi4/psi4meta
+
+# <<<  Compiler Stuff  >>>
+
+c_compiler:
+  - clang                              # [osx]
+  - gcc                                # [linux]
+fortran_compiler:
+  - gfortran
+target_platform:
+  - osx-64                             # [osx]
+  - linux-64                           # [linux]
+CONDA_BUILD_SYSROOT:
+  - /Users/github/SDKs/MacOSX10.9.sdk  # [osx]
+
+
+# <<<  Packages Stuff  >>>
+
+lua:
+  - 5.3.3
+blas_impl:
+  - mkl
+hdf5:
+  - 1.10.2  # Most likely need to build on our own for Fortran bindings!
+mkl:
+  - 2018
+openmpi:
+  - 3.1.0
+python:
+  - 3.5
+
+# <<<  HANDE Stuff  >>>
+
+ltrtver:
+    - "1.2" # (6 May 2018)

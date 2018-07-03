@@ -39,38 +39,31 @@ fi
 
 if [[ $(uname) == "Linux" ]]; then
 
-    # load Intel compilers
-    set +x
-    . /global/hds/software/cpu/eb3/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/bin/compilervars.sh intel64
-    . /global/hds/software/cpu/eb3/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/bin/compilervars.sh intel64
-    . /global/hds/software/cpu/eb3/imkl/2018.1.163-iimpi-2018a/bin/compilervars.sh intel64
-    set -x
-
     # link against conda MKL & GCC
     LAPACK_INTERJECT="${PREFIX}/lib/libmkl_rt.so"
     ALLOPTS="-gnu-prefix=${HOST}- ${OPTS}"
 
+    echo $PREFIX
+    echo $BUILD_PREFIX
+    `type -P mpicc` --version
+    `type -P mpifort` --version
+
     # configure
     "${BUILD_PREFIX}"/bin/cmake \
-        -H"${SRC_DIR}" \
-        -Bbuild \
-        -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_Fortran_COMPILER=ifort \
-        -DCMAKE_C_COMPILER=icc \
-        -DCMAKE_C_FLAGS="${ALLOPTS}" \
-        -DCMAKE_Fortran_FLAGS="${ALLOPTS}" \
-        -DCMAKE_INSTALL_LIBDIR=lib \
-        -DPYMOD_INSTALL_LIBDIR="${PYMOD_INSTALL_LIBDIR}" \
-        -DPYTHON_EXECUTABLE="${PYTHON}" \
-        -DCMAKE_PREFIX_PATH="${PREFIX}" \
-        -DENABLE_OPENMP=ON \
-        -DENABLE_XHOST=OFF \
-        -DENABLE_GENERIC=OFF \
-        -DLAPACK_LIBRARIES="${LAPACK_INTERJECT}" \
-        -DBUILDNAME="LAB-RHEL7-gcc7.2-intel18.0.2-mkl-py${CONDA_PY}-release-conda" \
-        -DSITE="gatech-conda" \
-        -DSPHINX_ROOT="${PREFIX}"
+              -H"${SRC_DIR}" \
+              -Bbuild \
+              -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+              -DENABLE_HDF5=ON \
+              -DENABLE_UUID=ON \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_Fortran_COMPILER=$(type -P mpifort) \
+              -DCMAKE_C_COMPILER=$(type -P mpicc) \
+              -DENABLE_MPI=ON \
+              -DENABLE_SCALAPACK=ON \
+              -DPYTHON_EXECUTABLE="${PYTHON}" \
+              -DCMAKE_PREFIX_PATH="${PREFIX}" \
+              -DENABLE_OPENMP=ON
+              #-DTRLan_LIBRARIES="-L$DEPS/trlan/lib -ltrlan" \
 
     # build and install
     cmake --build build --target install -- -j"${CPU_COUNT}"

@@ -1,7 +1,6 @@
 # Copied/adapted from https://github.com/psi4/psi4meta
 
 # <<<  Compiler Stuff  >>>
-
 c_compiler:
   - clang                              # [osx]
   - gcc                                # [linux]
@@ -21,13 +20,16 @@ lua:
 blas_impl:
   - mkl
 hdf5:
-  - 1.10.2  # Most likely need to build on our own for Fortran bindings!
+  - 1.10.2
 mkl:
   - 2018
-openmpi:
-  - 3.1.0
+mpi:
+  - openmpi
 python:
   - 3.5
+
+pin_run_as_build:
+  openmpi: x.x
 
 # <<<  HANDE Stuff  >>>
 

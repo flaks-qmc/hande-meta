@@ -16,6 +16,8 @@ build:
     number: 0                                  # [osx]
     binary_relocation: true
     skip: true                                 # [win]
+    requires_features:
+        blas: {{ blas_impl }}
 
 requirements:
     build:
@@ -26,35 +28,19 @@ requirements:
         - lua {{ lua }}
         - mkl-devel {{ mkl }}            # [blas_impl == 'mkl']
         - hdf5 {{ hdf5 }}
-        - openmpi {{ openmpi }}
+        - {{ mpi }}
+        - openmp
         - python {{ python }}
         - libuuid
-        # rt for ctest
         - numpy
         - pandas
-
-outputs:
-    - name: hande
-      build:
-          requires_features:
-              blas: {{ blas_impl }}
-      requirements:
-          build:
-              - cmake >=3.6
-              - {{ compiler('fortran') }}
-              - {{ compiler('c') }}
-          host:
-              - mkl-devel {{ mkl }}            # [blas_impl == 'mkl']
-              - python {{ python }}
-              - lua {{ lua }}
-              - hdf5 {{ hdf5 }}
-              - openmpi {{ openmpi }}
-              - libuuid
-          run:
-              - numpy
-              - pandas
-              - intel-openmp
-              - {{ pin_compatible('python', max_pin='x.x') }}
+        - matplotlib
+    run:
+        - {{ mpi }}
+        - numpy
+        - pandas
+        - matplotlib
+        - {{ pin_compatible('python', max_pin='x.x') }}
       #files:
       #    - bin/psi4
       #    - include/psi4
@@ -79,15 +65,15 @@ outputs:
       #        # Actually test
       #        - conda list
       #        - python -c "import psi4; psi4.test(); print('*** Psi4 {} built successfully. Buy psinet a beer!'.format(psi4.__version__))"
-      about:
-          home: https://hande.readthedocs.io
-          dev_url: https://github.com/hande-qmc/hande
-          doc_url: https://hande.readthedocs.io
-          doc_source_url: https://github.com/hande-qmc/hande/tree/master/documentation
-          license: LGPL-2.1
-          license_url: https://opensource.org/licenses/LGPL-2.1
-          license_file: COPYING.LESSER
-          license_family: LGPL
-          summary: "Open Source Stochastic Quantum Chemistry"
-          description: >
-            HANDE is an efficient, highly parallel code for stochastic quantum chemistry. It can be used both as a standalone program or (optionally) as a library from an existing quantum chemistry code.
+about:
+    home: https://hande.readthedocs.io
+    dev_url: https://github.com/hande-qmc/hande
+    doc_url: https://hande.readthedocs.io
+    doc_source_url: https://github.com/hande-qmc/hande/tree/master/documentation
+    license: LGPL-2.1
+    license_url: https://opensource.org/licenses/LGPL-2.1
+    license_file: COPYING.LESSER
+    license_family: LGPL
+    summary: "Open Source Stochastic Quantum Chemistry"
+    description: >
+      HANDE is an efficient, highly parallel code for stochastic quantum chemistry. It can be used both as a standalone program or (optionally) as a library from an existing quantum chemistry code.
